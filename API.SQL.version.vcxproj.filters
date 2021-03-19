@@ -18,24 +18,24 @@
     <ClCompile Include="main_server.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Server.cpp">
+    <ClCompile Include="HttpServer\Server.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="ServiceSQL.cpp">
+    <ClCompile Include="HttpServer\SqlService.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="AppSettings.cpp">
+    <ClCompile Include="HttpServer\IAppSettings.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="IServiceSQL.h">
+    <ClInclude Include="HttpServer\IServer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="IServer.h">
+    <ClInclude Include="HttpServer\SqlService.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="IAppSettings.h">
+    <ClInclude Include="HttpServer\IAppSettings.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

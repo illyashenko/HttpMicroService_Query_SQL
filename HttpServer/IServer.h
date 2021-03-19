@@ -4,8 +4,8 @@
 #include <httplib.h>
 #include <pugixml.hpp>
 #include <nlohmann/json.hpp>
-#include "IServiceSQL.h"
 #include "IAppSettings.h"
+#include "SqlService.h"
 #include <boolinq/boolinq.h>
 
 using namespace httplib;

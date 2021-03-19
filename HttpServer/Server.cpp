@@ -20,31 +20,6 @@ int GetAuth(string& login, string& pass)
 	return nAppCount;
 }
 
-string GetSerializeString(vector<map<string, string>>& vectorResponse)
-{
-	string str_array;
-	int a = 1;
-	str_array += '[';
-	for (map<string, string> it_vector : vectorResponse)
-	{
-		string struct_map;
-		int s = 1;
-		struct_map += '{';
-		for (const auto& it : it_vector)
-		{
-			struct_map += '"' + it.first + '"' + " : " + '"' + it.second + '"';
-			struct_map += (it_vector.size() != s) ? "," : "";
-			s++;
-		}
-		struct_map += '}';
-		str_array += struct_map;
-		str_array += (vectorResponse.size() != a) ? "," : "";
-		a++;
-	}
-	str_array += ']';
-	return str_array;
-}
-
 void FillConnectionData(json& j, string& connectionString, string& stringRequest)
 {
 	for (json::iterator it = j.begin(); it != j.end(); ++it)
@@ -80,19 +55,14 @@ void Controller_api(const Request& req, Response& res)
 
 	FillConnectionData(j, connectionString, stringRequest);
 
-	wstring conString(connectionString.begin(), connectionString.end());
-	wstring reqString(stringRequest.begin(), stringRequest.end());
+	SqlService sqlService;
 
-	vector<map<string, string>> listData = main_sql(&conString[0], &reqString[0], mistake);
+	string listData = sqlService.ProcessSqlQuery(connectionString, stringRequest, mistake);
 
-	if (mistake)
-	{
-		res.status = 400;
-		return;
-	}
+	if (mistake) { res.status = 400; }
 
 	res.set_header("Content-Type", "application/json; charset=Windows-1251");
-	res.body = GetSerializeString(listData);
+	res.body = listData;
 }
 
 void HttpServer::Start()

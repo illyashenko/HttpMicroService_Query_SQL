@@ -73,6 +73,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -142,15 +143,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AppSettings.cpp" />
-    <ClCompile Include="Server.cpp" />
-    <ClCompile Include="ServiceSQL.cpp" />
+    <ClCompile Include="HttpServer\IAppSettings.cpp" />
+    <ClCompile Include="HttpServer\Server.cpp" />
     <ClCompile Include="main_server.cpp" />
+    <ClCompile Include="HttpServer\SqlService.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="IAppSettings.h" />
-    <ClInclude Include="IServer.h" />
-    <ClInclude Include="IServiceSQL.h" />
+    <ClInclude Include="HttpServer\IAppSettings.h" />
+    <ClInclude Include="HttpServer\IServer.h" />
+    <ClInclude Include="HttpServer\SqlService.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="ServerSettings.xml">
