@@ -16,6 +16,7 @@ public:
 	string ProcessSqlQuery(const string& connectionString, const string& sqlQuerty, bool& mistake);
 
 private:
+	vector<map<string, string>> GetListData(result& results);
 	string GetJsonString(vector<map<string, string>>& vectorResponse);
 
 };

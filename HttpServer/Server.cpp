@@ -10,14 +10,14 @@ HttpServer::~HttpServer()
 {
 }
 
-int GetAuth(string& login, string& pass) 
+int GetAuth(const string& login, const string& pass) 
 {
-	auto nAppCount = boolinq::from(vector_users).
+	auto numAppCount = boolinq::from(vector_users).
 		where([&](const AppSettings& appSetting)
 			      { return appSetting.login == login && appSetting.pass == pass;
 			      }).count();
 
-	return nAppCount;
+	return numAppCount;
 }
 
 void FillConnectionData(json& j, string& connectionString, string& stringRequest)
@@ -49,20 +49,28 @@ void Controller_api(const Request& req, Response& res)
 		res.status = 401;
 		return;
 	}
+	//**********************//
 
 	string connectionString;
 	string stringRequest;
 
 	FillConnectionData(j, connectionString, stringRequest);
 
+	if (connectionString == "" || stringRequest == "")
+	{
+		res.status = 400;
+		return;
+	}
+
 	SqlService sqlService;
 
 	string listData = sqlService.ProcessSqlQuery(connectionString, stringRequest, mistake);
 
-	if (mistake) { res.status = 400; }
+	if (mistake) { res.status = 404; }
 
 	res.set_header("Content-Type", "application/json; charset=Windows-1251");
 	res.body = listData;
+
 }
 
 void HttpServer::Start()
@@ -87,7 +95,7 @@ void HttpServer::FillAppSetting()
 
 		app.login = el.attribute("login").value();
 		app.pass = el.attribute("pass").value();
-		
+
 		vector_users.push_back(app);
 	}
 
