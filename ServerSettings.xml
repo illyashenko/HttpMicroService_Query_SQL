@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Users>
 	<user login ="illya" pass ="123456"></user>
-	<user login ="ivan" pass ="17101030"></user>
+	<user login ="ivan" pass ="123654"></user>
 	<ServerPath path="localhost" port= "5005"></ServerPath> 
 </Users>
