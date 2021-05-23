@@ -1,32 +1,30 @@
 #include "SqlService.h"
 
-SqlService::SqlService()
-{
-}
+SqlService::SqlService(){}
+SqlService::~SqlService(){}
 
-SqlService::~SqlService()
+string SqlService::GetListData(result& results)
 {
-}
-
-vector<map<string, string>> SqlService::GetListData(result& results)
-{
-	short const col = results.columns();
-	vector<map<string, string>> vector_result;
+	short const column = results.columns();
+	picojson::array list_;
 
 	while (results.next())
 	{
-		map<string, string> map_result;
-
-		for (short i = 0; i < col; i++)
+		picojson::object map_;
+		for (short i = 0; i < column; i++)
 		{
-			string col_name = results.column_name(i);
-		    string res = results.get<string>(i);
-
-			map_result.insert(make_pair(col_name, res));
+			string key = results.column_name(i);
+			string val = results.get<string>(i);
+			picojson::value strVal(val);
+			map_.emplace(key, strVal);
 		}
-		vector_result.push_back(map_result);
+		picojson::value valMap(map_);
+		list_.push_back(valMap);
 	}
-	return vector_result;
+	picojson::value res(list_);
+	string str_rez = res.serialize();
+
+	return str_rez;
 }
 
 string SqlService::ProcessSqlQuery(const string& connectionString, const string& sqlQuerty, bool& mistake)
@@ -37,41 +35,13 @@ string SqlService::ProcessSqlQuery(const string& connectionString, const string&
 	{
 		connection conn(connectionString);
 		result results = execute(conn, sqlQuerty);
-
-		vector<map<string, string>> vector_result = GetListData(results);
-		str_result = GetJsonString(vector_result);
+		string vector_result = GetListData(results);
 	}
-	catch (const exception& e)
+	catch (const exception& exception_)
 	{
 		mistake = true;
-		return e.what();
+		return exception_.what();
 	}
-
 	return str_result;
-}
-
-string SqlService::GetJsonString(vector<map<string, string>>& vectorResponse)
-{
-	string str_array;
-	int a = 1;
-	str_array += '[';
-	for (map<string, string> it_vector : vectorResponse)
-	{
-		string struct_map;
-		int s = 1;
-		struct_map += '{';
-		for (const auto& it : it_vector)
-		{
-			struct_map += '"' + it.first + '"' + " : " + '"' + it.second + '"';
-			struct_map += (it_vector.size() != s) ? "," : "";
-			s++;
-		}
-		struct_map += '}';
-		str_array += struct_map;
-		str_array += (vectorResponse.size() != a) ? "," : "";
-		a++;
-	}
-	str_array += ']';
-	return str_array;
 }
 

@@ -2,13 +2,8 @@
 
 vector<AppSettings> vector_users;
 
-HttpServer::HttpServer()
-{
-}
-
-HttpServer::~HttpServer()
-{
-}
+HttpServer::HttpServer() : port_(0) {}
+HttpServer::~HttpServer() {}
 
 int GetAuth(const string& login, const string& pass) 
 {
@@ -24,14 +19,8 @@ void FillConnectionData(json& j, string& connectionString, string& stringRequest
 {
 	for (json::iterator it = j.begin(); it != j.end(); ++it)
 	{
-		if (it.key() == "ConnectionString")
-		{
-			connectionString = it.value();
-		}
-		if (it.key() == "StringRequest")
-		{
-			stringRequest = it.value();
-		}
+		if (it.key() == "ConnectionString") { connectionString = it.value(); }
+		if (it.key() == "StringRequest") { stringRequest = it.value(); }
 	}
 }
 
@@ -110,22 +99,7 @@ void HttpServer::FillAppSetting()
 	}
 }
 
-string HttpServer::GetPath()
-{
-	return path_;
-}
-
-int HttpServer::GetPort()
-{
-	return port_;
-}
-
-void HttpServer::SetServerPath(string path)
-{
-	this->path_ = path;
-}
-
-void HttpServer::SetServerPort(int port)
-{
-	this->port_ = port;
-}
+string HttpServer::GetPath() { return path_; }
+int HttpServer::GetPort() { return port_; }
+void HttpServer::SetServerPath(string path) { this->path_ = path; }
+void HttpServer::SetServerPort(int port) { this->port_ = port; }
